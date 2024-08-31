@@ -16,7 +16,7 @@ export default function AuthPage() {
         </h1>
 
         <div className="flex gap-x-2 justify-center mt-4">
-          <Button asChild>
+          <Button variant="secondary" asChild>
             <SignUpButton mode="modal">Sign Up</SignUpButton>
           </Button>
 
