@@ -12,7 +12,7 @@ export default function AuthPage() {
     <main>
       <SignedOut>
         <h1 className="text-2xl font-bold">
-          Manage Your Own Personal Finance Tracker!
+          💸 Manage Your Own Personal Finance Tracker! 💸
         </h1>
 
         <div className="flex gap-x-2 justify-center mt-4">
