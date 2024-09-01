@@ -46,7 +46,7 @@ const formSchema = z.object({
 export default function FinancialRecordForm() {
   const { user } = useUser();
 
-  const { records, addRecord } = useFinancialRecords()
+  const { addRecord } = useFinancialRecords()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -72,8 +72,6 @@ export default function FinancialRecordForm() {
     addRecord(newRecord)
     form.reset();
   }
-
-  console.log(records);
 
   return (
     <Form {...form}>

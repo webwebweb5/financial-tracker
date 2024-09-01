@@ -13,4 +13,5 @@ export interface FinancialRecordsContextType {
   addRecord: (record: FinancialRecord) => void;
   updateRecord: (id: string, newRecord: FinancialRecord) => void;
   deleteRecord: (id: string) => void;
+  isLoading: boolean;
 }

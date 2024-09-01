@@ -12,18 +12,25 @@ export const FinancialRecordsProvider = ({
   children: React.ReactNode;
 }) => {
   const [records, setRecords] = useState<FinancialRecord[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user } = useUser();
 
   const fetchRecords = async () => {
     if (!user) return;
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_API}/financial-records/getAllByUserID/${user.id}`
-    );
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_API}/financial-records/getAllByUserID/${user.id}`
+      );
 
-    if (response.ok) {
-      const records = await response.json();
-      console.log(records);
-      setRecords(records);
+      if (response.ok) {
+        const records = await response.json();
+        setRecords(records);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -102,7 +109,7 @@ export const FinancialRecordsProvider = ({
 
   return (
     <FinancialRecordsContext.Provider
-      value={{ records, addRecord, updateRecord, deleteRecord }}
+      value={{ records, addRecord, updateRecord, deleteRecord, isLoading }}
     >
       {children}
     </FinancialRecordsContext.Provider>
