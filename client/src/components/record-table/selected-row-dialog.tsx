@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { useEffect, useTransition } from "react";
+import { LuLoader2 } from "react-icons/lu";
 import {
   Dialog,
   DialogContent,
@@ -22,7 +23,6 @@ import {
   FormLabel,
   FormMessage,
 } from "../../components/ui/form";
-
 import { Input } from "../../components/ui/input";
 import {
   Select,
@@ -32,19 +32,23 @@ import {
   SelectValue,
 } from "../../components/ui/select";
 import { Button } from "../ui/button";
-import { useEffect, useTransition } from "react";
-
-import { LuLoader2 } from "react-icons/lu";
-
-// ----------------------------------------------------------------------
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 
 interface SelectedRowDialogProps {
   isOpen: boolean;
   onClose: (isOpen: boolean) => void;
   selectedRow: FinancialRecord | null;
 }
-
-// ----------------------------------------------------------------------
 
 export function SelectedRowDialog({
   isOpen,
@@ -89,7 +93,6 @@ export function SelectedRowDialog({
       paymentMethod: values.paymentMethod,
     };
 
-    console.log(newRecord);
     startTransition(() => {
       updateRecord(values._id, newRecord);
     });
@@ -101,13 +104,12 @@ export function SelectedRowDialog({
       console.error("Cannot delete record: _id is undefined");
       return;
     }
-  
+
     startTransition(() => {
       deleteRecord(recordId);
       onClose(false); // Close the dialog after deleting
     });
   }
-  
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -213,13 +215,32 @@ export function SelectedRowDialog({
               />
             </div>
             <div className="flex justify-end space-x-4">
-              <Button
-                variant="destructive"
-                onClick={handleDelete}
-                disabled={isPending}
-              >
-                Delete
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive" disabled={isPending}>
+                    Delete
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      this record.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <Button variant="destructive" asChild>
+                      <AlertDialogAction onClick={handleDelete}>
+                        Continue
+                      </AlertDialogAction>
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
               <Button type="submit" disabled={isPending}>
                 {isPending && (
                   <LuLoader2 className="mr-2 w-5 h-5 animate-spin" />
