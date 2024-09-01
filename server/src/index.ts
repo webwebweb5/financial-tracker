@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express, { Express } from "express";
+import express, { Express, Request, Response } from "express";
 import connectDB from "./config/database";
 
 import financialRecordRouter from "./routes/financial-route";
@@ -14,11 +14,11 @@ app.use(cors());
 
 app.use("/api/v1/financial-records", financialRecordRouter);
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("API is running...");
 });
 
-app.get("/health", async (req, res) => {
+app.get("/health", async (req: Request, res: Response) => {
   // Check database connection status (assuming you are using Mongoose)
   const dbState =
     mongoose.connection.readyState === 1 ? "Connected" : "Disconnected";
