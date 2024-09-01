@@ -1,6 +1,7 @@
 import { useUser } from "@clerk/clerk-react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { FinancialRecord, FinancialRecordsContextType } from "../types";
+import { useToast } from "../hooks/use-toast";
 
 export const FinancialRecordsContext = createContext<
   FinancialRecordsContextType | undefined
@@ -14,13 +15,16 @@ export const FinancialRecordsProvider = ({
   const [records, setRecords] = useState<FinancialRecord[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user } = useUser();
+  const { toast } = useToast();
 
   const fetchRecords = async () => {
     if (!user) return;
     setIsLoading(true);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_API}/financial-records/getAllByUserID/${user.id}`
+        `${import.meta.env.VITE_BACKEND_API}/financial-records/getAllByUserID/${
+          user.id
+        }`
       );
 
       if (response.ok) {
@@ -39,21 +43,33 @@ export const FinancialRecordsProvider = ({
   }, [user]);
 
   const addRecord = async (record: FinancialRecord) => {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/financial-records`, {
-      method: "POST",
-      body: JSON.stringify(record),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_API}/financial-records`,
+      {
+        method: "POST",
+        body: JSON.stringify(record),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     try {
       if (response.ok) {
         const newRecord = await response.json();
         setRecords((prev) => [...prev, newRecord]);
+        toast({
+          variant: "success",
+          description: "Add Record Successfully",
+        });
       }
     } catch (err) {
       console.log(err);
+      // TODO: fix err backend
+      toast({
+        variant: "destructive",
+        description: "Uh oh! Something went wrong.",
+      });
     }
   };
 
@@ -81,9 +97,18 @@ export const FinancialRecordsProvider = ({
             }
           })
         );
+        toast({
+          variant: "success",
+          description: "Update Record Successfully",
+        });
       }
     } catch (err) {
       console.log(err);
+      // TODO: fix err backend
+      toast({
+        variant: "destructive",
+        description: "Uh oh! Something went wrong.",
+      });
     }
   };
 
@@ -101,9 +126,18 @@ export const FinancialRecordsProvider = ({
         setRecords((prev) =>
           prev.filter((record) => record._id !== deletedRecord._id)
         );
+        toast({
+          variant: "success",
+          description: "Delete Record Successfully",
+        });
       }
     } catch (err) {
       console.log(err);
+      // TODO: fix err backend
+      toast({
+        variant: "destructive",
+        description: "Uh oh! Something went wrong.",
+      });
     }
   };
 

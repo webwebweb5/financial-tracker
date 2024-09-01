@@ -26,13 +26,16 @@ import {
 import { useUser } from "@clerk/clerk-react";
 import { useFinancialRecords } from "../../context/financial-record-context";
 import { RecordSchema } from "../../schemas";
+import { useTransition } from "react";
+import { LuLoader2 } from "react-icons/lu";
 
 // ----------------------------------------------------------------------
 
 export default function FinancialRecordForm() {
   const { user } = useUser();
-
   const { addRecord } = useFinancialRecords();
+
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof RecordSchema>>({
     resolver: zodResolver(RecordSchema),
@@ -55,7 +58,9 @@ export default function FinancialRecordForm() {
     };
 
     console.log(newRecord);
-    addRecord(newRecord);
+    startTransition(() => {
+      addRecord(newRecord);
+    });
     form.reset();
   }
 
@@ -70,7 +75,11 @@ export default function FinancialRecordForm() {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="Description" {...field} />
+                  <Input
+                    placeholder="Description"
+                    {...field}
+                    disabled={isPending}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -83,7 +92,12 @@ export default function FinancialRecordForm() {
               <FormItem>
                 <FormLabel>Amount</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="100" {...field} />
+                  <Input
+                    type="number"
+                    placeholder="100"
+                    {...field}
+                    disabled={isPending}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -143,7 +157,10 @@ export default function FinancialRecordForm() {
             )}
           />
         </div>
-        <Button type="submit">Add Record</Button>
+        <Button type="submit" disabled={isPending}>
+          {isPending && <LuLoader2 className="mr-2 w-5 h-5 animate-spin" />}
+          Add Record
+        </Button>
       </form>
     </Form>
   );

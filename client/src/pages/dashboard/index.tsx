@@ -17,7 +17,7 @@ export default function DashboardPage() {
       totalAmount += record.amount;
     });
 
-    return totalAmount;
+    return parseFloat(totalAmount.toFixed(2));
   }, [records]);
 
   if (!isLoaded) return <Loading />;
@@ -54,13 +54,17 @@ export default function DashboardPage() {
 
         <FinancialRecordForm />
 
-        <div className="my-4 bg-[#1C1C1C] rounded-lg text-neutral-400">
+        <div className="my-4 bg-[#1C1C1C] rounded-lg text-neutral-300">
           <div className="hover:bg-neutral-800 rounded-lg duration-200 transition-all ease-in p-4">
             <div className="flex text-2xl gap-x-3">$ {totalMonthly}</div>
           </div>
         </div>
 
-        <DataTable columns={columns} data={records} totalMonthly={totalMonthly} />
+        <DataTable
+          columns={columns}
+          data={records}
+          totalMonthly={totalMonthly}
+        />
       </div>
     </main>
   );

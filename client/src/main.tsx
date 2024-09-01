@@ -4,6 +4,7 @@ import App from "./App.tsx";
 import "./index.css";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { dark } from "@clerk/themes";
+import { Toaster } from "./components/ui/toaster.tsx";
 
 // Import your publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       }}
     >
       <App />
+      <Toaster />
     </ClerkProvider>
   </React.StrictMode>
 );
