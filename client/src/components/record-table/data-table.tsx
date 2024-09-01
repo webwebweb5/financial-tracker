@@ -34,14 +34,16 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { HiMiniChevronDown } from "react-icons/hi2";
+import { FinancialRecord } from "../../types";
+import { SelectedRowDialog } from "./selected-row-dialog";
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData extends FinancialRecord, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   totalMonthly: number;
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends FinancialRecord, TValue>({
   columns,
   data,
   totalMonthly,
@@ -53,6 +55,9 @@ export function DataTable<TData, TValue>({
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const [selectedRow, setSelectedRow] = useState<FinancialRecord | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const table = useReactTable({
     data,
@@ -72,6 +77,11 @@ export function DataTable<TData, TValue>({
       pagination,
     },
   });
+
+  const handleRowClick = (row: FinancialRecord) => {
+    setSelectedRow(row);
+    setIsDialogOpen(true);
+  };
 
   return (
     <>
@@ -165,6 +175,8 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={() => handleRowClick(row.original)}
+                  className="cursor-pointer"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -213,6 +225,13 @@ export function DataTable<TData, TValue>({
           Next
         </Button>
       </div>
+
+      {/* Dialog */}
+      <SelectedRowDialog
+        isOpen={isDialogOpen}
+        onClose={setIsDialogOpen}
+        selectedRow={selectedRow}
+      />
     </>
   );
 }

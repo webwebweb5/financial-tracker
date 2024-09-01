@@ -3,17 +3,18 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "../ui/button";
 import { PiArrowsDownUpLight } from "react-icons/pi";
+import { FinancialRecord } from "../../types";
 
-export type RecordProps = {
-  _id?: string;
-  description: string;
-  amount: number;
-  category: string;
-  paymentMethod: string;
-  date: string;
-};
+// export type RecordProps = {
+//   _id?: string;
+//   description: string;
+//   amount: number;
+//   category: string;
+//   paymentMethod: string;
+//   date: string;
+// };
 
-export const columns: ColumnDef<RecordProps>[] = [
+export const columns: ColumnDef<FinancialRecord>[] = [
   {
     accessorKey: "description",
     header: "Description",

@@ -1,7 +1,7 @@
 export interface FinancialRecord {
   _id?: string;
   userId: string;
-  date: string;
+  date?: string;
   // date: Date;
   description: string;
   amount: number;
