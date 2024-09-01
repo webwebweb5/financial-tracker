@@ -1,10 +1,11 @@
 import { SignedIn, UserButton, useUser } from "@clerk/clerk-react";
 import { GiMoneyStack } from "react-icons/gi";
 import FinancialRecordForm from "./financial-record-form";
-import FinancialRecordList from "./financial-record-list";
 import { useFinancialRecords } from "../../context/financial-record-context";
 import { useMemo } from "react";
 import Loading from "../../components/loading";
+import { DataTable } from "../../components/record-table/data-table";
+import { columns } from "../../components/record-table/columns";
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
@@ -19,7 +20,7 @@ export default function DashboardPage() {
     return totalAmount;
   }, [records]);
 
-  if (!isLoaded) return <Loading />
+  if (!isLoaded) return <Loading />;
 
   return (
     <main className="max-w-[78rem] mx-auto p-4 overflow-auto">
@@ -53,15 +54,13 @@ export default function DashboardPage() {
 
         <FinancialRecordForm />
 
-        <div className="border border-neutral-700 my-4" />
-
         <div className="my-4 bg-[#1C1C1C] rounded-lg text-neutral-400">
           <div className="hover:bg-neutral-800 rounded-lg duration-200 transition-all ease-in p-4">
             <div className="flex text-2xl gap-x-3">$ {totalMonthly}</div>
           </div>
         </div>
 
-        <FinancialRecordList records={records} totalMonthly={totalMonthly} />
+        <DataTable columns={columns} data={records} totalMonthly={totalMonthly} />
       </div>
     </main>
   );
