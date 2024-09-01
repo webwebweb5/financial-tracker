@@ -4,11 +4,13 @@ import connectDB from "./config/database";
 
 import financialRecordRouter from "./routes/financial-route";
 import mongoose from "mongoose";
+import cors from "cors";
 
 const app: Express = express();
 const port = process.env.PORT;
 
 app.use(express.json());
+app.use(cors());
 
 app.use("/api/v1/financial-records", financialRecordRouter);
 
