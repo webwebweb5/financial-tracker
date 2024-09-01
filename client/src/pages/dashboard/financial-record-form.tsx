@@ -36,7 +36,7 @@ const formSchema = z.object({
     .max(50, { message: "Description must contain at most 50 character(s)" }),
   amount: z.coerce
     .number()
-    .min(1, { message: "Amount is required" }),
+    .min(-1000000, { message: "Amount is required" }),
   category: z.string().min(1, { message: "Category is required" }), // Category validation
   paymentMethod: z.string().min(1, { message: "Payment method is required" }), // Payment method validation
 });
