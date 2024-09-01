@@ -23,6 +23,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../components/ui/select";
+import { useUser } from "@clerk/clerk-react";
+import { useFinancialRecords } from "../../context/financial-record-context";
+
+// ----------------------------------------------------------------------
 
 // Define the schema for the form
 const formSchema = z.object({
@@ -32,13 +36,18 @@ const formSchema = z.object({
     .max(50, { message: "Description must contain at most 50 character(s)" }),
   amount: z.coerce
     .number()
-    .min(1, { message: "Amount is required" })
-    .nonnegative({ message: "Amount must be a non-negative number!" }),
+    .min(1, { message: "Amount is required" }),
   category: z.string().min(1, { message: "Category is required" }), // Category validation
   paymentMethod: z.string().min(1, { message: "Payment method is required" }), // Payment method validation
 });
 
+// ----------------------------------------------------------------------
+
 export default function FinancialRecordForm() {
+  const { user } = useUser();
+
+  const { records, addRecord } = useFinancialRecords()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,10 +59,21 @@ export default function FinancialRecordForm() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Handle form submission
-    console.log(values);
+    const newRecord = {
+      userId: user?.id ?? "",
+      date: new Date(),
+      description: values.description,
+      amount: values.amount,
+      category: values.category,
+      paymentMethod: values.paymentMethod,
+    };
+
+    console.log(newRecord);
+    addRecord(newRecord)
     form.reset();
   }
+
+  console.log(records);
 
   return (
     <Form {...form}>

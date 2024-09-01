@@ -1,6 +1,7 @@
 import { useUser } from "@clerk/clerk-react";
 import { GiMoneyStack } from "react-icons/gi";
 import FinancialRecordForm from "./financial-record-form";
+import FinancialRecordList from "./financial-record-list";
 
 export default function DashboardPage() {
   const { user } = useUser();
@@ -38,7 +39,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="border border-neutral-700 my-4" />
+        <FinancialRecordList />
       </div>
     </main>
   );

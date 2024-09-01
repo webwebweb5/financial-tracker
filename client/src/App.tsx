@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import DashboardPage from "./pages/dashboard";
 import AuthPage from "./pages/auth";
 import { ThemeProvider } from "./components/theme-provider";
+import { FinancialRecordsProvider } from "./context/financial-record-context";
 
 function App() {
   return (
@@ -9,7 +10,14 @@ function App() {
       <Router>
         <main className="flex justify-center w-full min-h-screen">
           <Routes>
-            <Route path="/" element={<DashboardPage />} />
+            <Route
+              path="/"
+              element={
+                <FinancialRecordsProvider>
+                  <DashboardPage />
+                </FinancialRecordsProvider>
+              }
+            />
             <Route path="/auth" element={<AuthPage />} />
           </Routes>
         </main>
