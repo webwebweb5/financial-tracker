@@ -52,7 +52,7 @@ export function SelectedRowDialog({
   selectedRow,
 }: SelectedRowDialogProps) {
   const { user } = useUser();
-  const { updateRecord } = useFinancialRecords();
+  const { updateRecord, deleteRecord } = useFinancialRecords();
 
   const [isPending, startTransition] = useTransition();
 
@@ -94,6 +94,20 @@ export function SelectedRowDialog({
       updateRecord(values._id, newRecord);
     });
   }
+
+  function handleDelete() {
+    const recordId = selectedRow?._id || "";
+    if (!recordId) {
+      console.error("Cannot delete record: _id is undefined");
+      return;
+    }
+  
+    startTransition(() => {
+      deleteRecord(recordId);
+      onClose(false); // Close the dialog after deleting
+    });
+  }
+  
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -198,10 +212,21 @@ export function SelectedRowDialog({
                 )}
               />
             </div>
-            <Button type="submit" disabled={isPending}>
-              {isPending && <LuLoader2 className="mr-2 w-5 h-5 animate-spin" />}
-              Update Record
-            </Button>
+            <div className="flex justify-end space-x-4">
+              <Button
+                variant="destructive"
+                onClick={handleDelete}
+                disabled={isPending}
+              >
+                Delete
+              </Button>
+              <Button type="submit" disabled={isPending}>
+                {isPending && (
+                  <LuLoader2 className="mr-2 w-5 h-5 animate-spin" />
+                )}
+                Update Record
+              </Button>
+            </div>
           </form>
         </Form>
       </DialogContent>
