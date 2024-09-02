@@ -2,14 +2,22 @@ import { SignedIn, UserButton, useUser } from "@clerk/clerk-react";
 import { GiMoneyStack } from "react-icons/gi";
 import FinancialRecordForm from "./financial-record-form";
 import { useFinancialRecords } from "../../context/financial-record-context";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import Loading from "../../components/loading";
 import { DataTable } from "../../components/record-table/data-table";
 import { columns } from "../../components/record-table/columns";
+import { useNavigate } from "react-router-dom";
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
   const { records } = useFinancialRecords();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoaded && !user) {
+      navigate("/auth");
+    }
+  }, [isLoaded, user, navigate]);
 
   const totalMonthly = useMemo(() => {
     let totalAmount = 0;

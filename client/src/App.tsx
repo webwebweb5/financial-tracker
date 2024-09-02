@@ -3,6 +3,7 @@ import DashboardPage from "./pages/dashboard";
 import AuthPage from "./pages/auth";
 import { ThemeProvider } from "./components/theme-provider";
 import { FinancialRecordsProvider } from "./context/financial-record-context";
+import { AuthGuard } from "./auth/AuthGuard";
 
 function App() {
   return (
@@ -14,7 +15,9 @@ function App() {
               path="/"
               element={
                 <FinancialRecordsProvider>
-                  <DashboardPage />
+                  <AuthGuard>
+                    <DashboardPage />
+                  </AuthGuard>
                 </FinancialRecordsProvider>
               }
             />
