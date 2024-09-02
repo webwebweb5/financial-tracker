@@ -9,10 +9,10 @@ import { Button } from "../../components/ui/button";
 
 export default function AuthPage() {
   return (
-    <main className="flex justify-center items-center w-full min-h-screen">
+    <main className="flex justify-center items-center min-h-screen">
       <div>
         <SignedOut>
-          <h1 className="text-2xl font-bold">
+          <h1 className="text-2xl font-bold text-center">
             💸 Manage Your Own Personal Finance Tracker! 💸
           </h1>
 
