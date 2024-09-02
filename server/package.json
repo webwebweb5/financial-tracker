@@ -1,19 +1,17 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "index",
+  "main": "src/index.ts",
   "scripts": {
-    "dev": "nodemon ./src/index.ts",
-    "start": "node ./build/index.ts",
-    "build": "rimraf dist && tsc",
-    "ts.check": "tsc --project tsconfig.json",
-    "add-build": "git add dist"
+    "start": "ts-node src/index.ts",
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "lint": "eslint --fix src test",
+    "typecheck": "tsc --noEmit"
   },
-  "pre-commit": [
-    "ts.check",
-    "build",
-    "add-build"
-  ],
+  "engines": {
+    "node": "18.x"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
