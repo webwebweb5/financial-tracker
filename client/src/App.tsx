@@ -3,7 +3,6 @@ import DashboardPage from "./pages/dashboard";
 import AuthPage from "./pages/auth";
 import { ThemeProvider } from "./components/theme-provider";
 import { FinancialRecordsProvider } from "./context/financial-record-context";
-import PaymentPage from "./components/record-table";
 
 function App() {
   return (
@@ -20,7 +19,6 @@ function App() {
               }
             />
             <Route path="/auth" element={<AuthPage />} />
-            <Route path="/payment" element={<PaymentPage />} />
           </Routes>
         </main>
       </Router>
