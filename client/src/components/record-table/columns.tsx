@@ -25,14 +25,14 @@ export const columns: ColumnDef<FinancialRecord>[] = [
     },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"));
-      const formatted = new Intl.NumberFormat("en-US", {
+      const formatted = new Intl.NumberFormat("th-TH", {
         style: "currency",
-        currency: "USD",
+        currency: "THB",
       }).format(amount);
 
-      const amountColor = amount < 0 ? "text-red-600" : "text-green-600";
+      const amountColor = amount < 0 ? "text-red-600" : "text-green-600 ml-3.5";
 
-      return <div className={`font-medium ${amountColor}`}>{formatted}</div>;
+      return <div className={`font-medium ml-2 ${amountColor}`}>{formatted}</div>;
     },
   },
   {

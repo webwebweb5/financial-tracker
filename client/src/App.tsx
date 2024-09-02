@@ -8,23 +8,23 @@ import { AuthGuard } from "./auth/AuthGuard";
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Router>
-        <main className="flex justify-center w-full min-h-screen">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <FinancialRecordsProvider>
+      <FinancialRecordsProvider>
+        <Router>
+          <main className="flex justify-center w-full min-h-screen">
+            <Routes>
+              <Route
+                path="/"
+                element={
                   <AuthGuard>
                     <DashboardPage />
                   </AuthGuard>
-                </FinancialRecordsProvider>
-              }
-            />
-            <Route path="/auth" element={<AuthPage />} />
-          </Routes>
-        </main>
-      </Router>
+                }
+              />
+              <Route path="/auth" element={<AuthPage />} />
+            </Routes>
+          </main>
+        </Router>
+      </FinancialRecordsProvider>
     </ThemeProvider>
   );
 }

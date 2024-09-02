@@ -202,7 +202,7 @@ export function DataTable<TData extends FinancialRecord, TValue>({
           <TableFooter>
             <TableRow>
               <TableCell colSpan={4}>Total</TableCell>
-              <TableCell className="text-right">$ {totalMonthly}</TableCell>
+              <TableCell className="text-right">฿ {totalMonthly}</TableCell>
             </TableRow>
           </TableFooter>
         </Table>
