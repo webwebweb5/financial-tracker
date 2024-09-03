@@ -67,7 +67,7 @@ export default function FinancialRecordForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="space-y-4">
+        <div className="space-y-6">
           <FormField
             control={form.control}
             name="description"
@@ -97,6 +97,7 @@ export default function FinancialRecordForm() {
                     placeholder="100"
                     {...field}
                     disabled={isPending}
+                    pattern="^-?\d*\.?\d*$"
                   />
                 </FormControl>
                 <FormMessage />
@@ -110,8 +111,10 @@ export default function FinancialRecordForm() {
               <FormItem>
                 <FormLabel>Category</FormLabel>
                 <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  onValueChange={(value) =>
+                    field.onChange(value === "none" ? "" : value)
+                  }
+                  defaultValue={field.value || "none"}
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -119,6 +122,7 @@ export default function FinancialRecordForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
+                    <SelectItem value="none">Select a category</SelectItem>
                     <SelectItem value="food">Food</SelectItem>
                     <SelectItem value="rent">Rent</SelectItem>
                     <SelectItem value="salary">Salary</SelectItem>
@@ -138,8 +142,10 @@ export default function FinancialRecordForm() {
               <FormItem>
                 <FormLabel>Payment Method</FormLabel>
                 <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  onValueChange={(value) =>
+                    field.onChange(value === "none" ? "" : value)
+                  }
+                  defaultValue={field.value || "none"}
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -147,6 +153,9 @@ export default function FinancialRecordForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
+                    <SelectItem value="none">
+                      Select a payment method
+                    </SelectItem>
                     <SelectItem value="credit-card">Credit Card</SelectItem>
                     <SelectItem value="cash">Cash</SelectItem>
                     <SelectItem value="bank-transfer">Bank Transfer</SelectItem>
