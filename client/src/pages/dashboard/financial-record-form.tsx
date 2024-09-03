@@ -123,10 +123,10 @@ export default function FinancialRecordForm() {
                 </FormControl>
                 {amount && (
                   <div className="flex mt-2">
-                    <Button variant="ghost" size={"sm"} onClick={handleIncomeClick}>
+                    <Button variant="ghost" type="button" size={"sm"} onClick={handleIncomeClick}>
                       Income (+)
                     </Button>
-                    <Button variant="ghost" size={"sm"} onClick={handleExpenseClick}>
+                    <Button variant="ghost" type="button" size={"sm"} onClick={handleExpenseClick}>
                       Expense (-)
                     </Button>
                   </div>
