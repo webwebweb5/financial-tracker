@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,7 +35,7 @@ import { LuLoader2 } from "react-icons/lu";
 export default function FinancialRecordForm() {
   const { user } = useUser();
   const { addRecord } = useFinancialRecords();
-
+  const [amount, setAmount] = useState<string>("");
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof RecordSchema>>({
@@ -46,6 +47,23 @@ export default function FinancialRecordForm() {
       paymentMethod: "",
     },
   });
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(e.target.value);
+    form.setValue("amount", parseFloat(e.target.value));
+  };
+
+  const handleIncomeClick = () => {
+    const positiveAmount = Math.abs(parseFloat(amount)).toString();
+    setAmount(positiveAmount);
+    form.setValue("amount", parseFloat(positiveAmount));
+  };
+
+  const handleExpenseClick = () => {
+    const negativeAmount = (-Math.abs(parseFloat(amount))).toString();
+    setAmount(negativeAmount);
+    form.setValue("amount", parseFloat(negativeAmount));
+  };
 
   function onSubmit(values: z.infer<typeof RecordSchema>) {
     const newRecord = {
@@ -62,6 +80,7 @@ export default function FinancialRecordForm() {
       addRecord(newRecord);
     });
     form.reset();
+    setAmount(""); // Reset the amount state
   }
 
   return (
@@ -96,10 +115,22 @@ export default function FinancialRecordForm() {
                     type="number"
                     placeholder="100"
                     {...field}
+                    value={amount}
+                    onChange={handleAmountChange}
                     disabled={isPending}
                     pattern="^-?\d*\.?\d*$"
                   />
                 </FormControl>
+                {amount && (
+                  <div className="flex mt-2">
+                    <Button variant="ghost" size={"sm"} onClick={handleIncomeClick}>
+                      Income (+)
+                    </Button>
+                    <Button variant="ghost" size={"sm"} onClick={handleExpenseClick}>
+                      Expense (-)
+                    </Button>
+                  </div>
+                )}
                 <FormMessage />
               </FormItem>
             )}
