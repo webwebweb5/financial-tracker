@@ -10,7 +10,7 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <FinancialRecordsProvider>
         <Router>
-          <main className="sm:max-w-lg mx-auto px-5 flex border justify-center items-center relative min-h-screen">
+          <main className="sm:max-w-lg mx-auto flex border justify-center items-center relative min-h-screen">
             <Routes>
               <Route
                 path="/"

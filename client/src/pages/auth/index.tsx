@@ -13,7 +13,7 @@ import { SiGmail } from "react-icons/si";
 
 export default function AuthPage() {
   return (
-    <main className="w-full flex flex-col h-screen pt-10 p-5 overflow-hidden">
+    <main className="w-full flex flex-col h-screen pt-10 p-5 px-8 overflow-hidden">
       <div className="flex flex-col gap-10">
         <SignedOut>
           <div className="flex items-center lg:gap-10 gap-4">
