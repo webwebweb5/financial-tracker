@@ -35,7 +35,7 @@ import {
 } from "../ui/dropdown-menu";
 import { HiMiniChevronDown } from "react-icons/hi2";
 import { FinancialRecord } from "../../types";
-import { SelectedRowDialog } from "./selected-row-dialog";
+import { UpdateSelectedRowDialog } from "./selected-row-dialog";
 
 interface DataTableProps<TData extends FinancialRecord, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -232,7 +232,7 @@ export function DataTable<TData extends FinancialRecord, TValue>({
       </div>
 
       {/* Dialog */}
-      <SelectedRowDialog
+      <UpdateSelectedRowDialog
         isOpen={isDialogOpen}
         onClose={setIsDialogOpen}
         selectedRow={selectedRow}

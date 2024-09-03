@@ -29,6 +29,7 @@ import { useFinancialRecords } from "../../context/financial-record-context";
 import { RecordSchema } from "../../schemas";
 import { useTransition } from "react";
 import { LuLoader2 } from "react-icons/lu";
+import { PiPlusCircleLight } from "react-icons/pi";
 
 // ----------------------------------------------------------------------
 
@@ -198,7 +199,7 @@ export default function FinancialRecordForm() {
           />
         </div>
         <Button type="submit" disabled={isPending}>
-          {isPending && <LuLoader2 className="mr-2 w-5 h-5 animate-spin" />}
+          {isPending ? <LuLoader2 className="mr-2 w-5 h-5 animate-spin" /> : <PiPlusCircleLight className="mr-2 w-5 h-5" />}
           Add Record
         </Button>
       </form>

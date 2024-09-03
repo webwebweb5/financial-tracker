@@ -1,7 +1,9 @@
+"use client";
+
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { LuLoader2 } from "react-icons/lu";
 import {
   Dialog,
@@ -43,6 +45,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
+import { PiCheckCircleLight, PiTrashLight } from "react-icons/pi";
 
 interface SelectedRowDialogProps {
   isOpen: boolean;
@@ -50,15 +53,15 @@ interface SelectedRowDialogProps {
   selectedRow: FinancialRecord | null;
 }
 
-export function SelectedRowDialog({
+export function UpdateSelectedRowDialog({
   isOpen,
   onClose,
   selectedRow,
 }: SelectedRowDialogProps) {
   const { user } = useUser();
   const { updateRecord, deleteRecord } = useFinancialRecords();
-
   const [isPending, startTransition] = useTransition();
+  const [amount, setAmount] = useState<string>("");
 
   const form = useForm<z.infer<typeof RecordWithIdSchema>>({
     resolver: zodResolver(RecordWithIdSchema),
@@ -71,7 +74,6 @@ export function SelectedRowDialog({
     },
   });
 
-  // Reset the form with new values when selectedRow changes
   useEffect(() => {
     if (selectedRow) {
       form.reset({
@@ -81,8 +83,26 @@ export function SelectedRowDialog({
         category: selectedRow.category || "",
         paymentMethod: selectedRow.paymentMethod || "",
       });
+      setAmount(selectedRow.amount.toString());
     }
   }, [selectedRow, form]);
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(e.target.value);
+    form.setValue("amount", parseFloat(e.target.value));
+  };
+
+  const handleIncomeClick = () => {
+    const positiveAmount = Math.abs(parseFloat(amount)).toString();
+    setAmount(positiveAmount);
+    form.setValue("amount", parseFloat(positiveAmount));
+  };
+
+  const handleExpenseClick = () => {
+    const negativeAmount = (-Math.abs(parseFloat(amount))).toString();
+    setAmount(negativeAmount);
+    form.setValue("amount", parseFloat(negativeAmount));
+  };
 
   function onSubmit(values: z.infer<typeof RecordWithIdSchema>) {
     const newRecord = {
@@ -149,9 +169,31 @@ export function SelectedRowDialog({
                         type="number"
                         placeholder="100"
                         {...field}
+                        value={amount}
+                        onChange={handleAmountChange}
                         disabled={isPending}
                       />
                     </FormControl>
+                    {amount && (
+                      <div className="flex mt-2">
+                        <Button
+                          variant="ghost"
+                          type="button"
+                          size={"sm"}
+                          onClick={handleIncomeClick}
+                        >
+                          Income (+)
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          type="button"
+                          size={"sm"}
+                          onClick={handleExpenseClick}
+                        >
+                          Expense (-)
+                        </Button>
+                      </div>
+                    )}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -218,6 +260,7 @@ export function SelectedRowDialog({
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button variant="destructive" disabled={isPending}>
+                    <PiTrashLight className="mr-2 w-5 h-5" />
                     Delete
                   </Button>
                 </AlertDialogTrigger>
@@ -242,10 +285,12 @@ export function SelectedRowDialog({
                 </AlertDialogContent>
               </AlertDialog>
               <Button type="submit" disabled={isPending}>
-                {isPending && (
+                {isPending ? (
                   <LuLoader2 className="mr-2 w-5 h-5 animate-spin" />
+                ) : (
+                  <PiCheckCircleLight className="mr-2 w-5 h-5" />
                 )}
-                Update Record
+                Update
               </Button>
             </div>
           </form>
