@@ -33,7 +33,14 @@ import { PiPlusCircleLight } from "react-icons/pi";
 
 // ----------------------------------------------------------------------
 
-export default function FinancialRecordForm() {
+interface FinancialRecordFormProps {
+  isOpen: boolean;
+  onClose: (isOpen: boolean) => void;
+}
+
+// ----------------------------------------------------------------------
+
+export default function FinancialRecordForm({ onClose, isOpen }: FinancialRecordFormProps) {
   const { user } = useUser();
   const { addRecord } = useFinancialRecords();
   const [amount, setAmount] = useState<string>("");
@@ -76,12 +83,19 @@ export default function FinancialRecordForm() {
       paymentMethod: values.paymentMethod,
     };
 
-    console.log(newRecord);
     startTransition(() => {
       addRecord(newRecord);
     });
-    form.reset();
+
+    form.reset({
+      description: "",
+      amount: 0,
+      category: values.category,
+      paymentMethod: values.paymentMethod,
+    });
+
     setAmount(""); // Reset the amount state
+    onClose(!isOpen)
   }
 
   return (
@@ -124,10 +138,20 @@ export default function FinancialRecordForm() {
                 </FormControl>
                 {amount && (
                   <div className="flex mt-2">
-                    <Button variant="ghost" type="button" size={"sm"} onClick={handleIncomeClick}>
+                    <Button
+                      variant="ghost"
+                      type="button"
+                      size={"sm"}
+                      onClick={handleIncomeClick}
+                    >
                       Income (+)
                     </Button>
-                    <Button variant="ghost" type="button" size={"sm"} onClick={handleExpenseClick}>
+                    <Button
+                      variant="ghost"
+                      type="button"
+                      size={"sm"}
+                      onClick={handleExpenseClick}
+                    >
                       Expense (-)
                     </Button>
                   </div>
@@ -144,7 +168,7 @@ export default function FinancialRecordForm() {
                 <FormLabel>Category</FormLabel>
                 <Select
                   onValueChange={(value) =>
-                    field.onChange(value === "none" ? "" : value)
+                    field.onChange(value === "none" || "" ? "" : value)
                   }
                   defaultValue={field.value || "none"}
                 >
@@ -161,6 +185,12 @@ export default function FinancialRecordForm() {
                     <SelectItem value="utilities">Utilities</SelectItem>
                     <SelectItem value="entertainment">Entertainment</SelectItem>
                     <SelectItem value="other">Other</SelectItem>
+                    {/* <SelectItem value="new-tag"> */}
+                      <Button variant="outline" size="sm" className="w-full mt-0.5">
+                        <PiPlusCircleLight className="mr-2 w-5 h-5" />
+                        Add new tag
+                      </Button>
+                    {/* </SelectItem> */}
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -175,7 +205,7 @@ export default function FinancialRecordForm() {
                 <FormLabel>Payment Method</FormLabel>
                 <Select
                   onValueChange={(value) =>
-                    field.onChange(value === "none" ? "" : value)
+                    field.onChange(value === "none" || "" ? "" : value)
                   }
                   defaultValue={field.value || "none"}
                 >
@@ -199,7 +229,11 @@ export default function FinancialRecordForm() {
           />
         </div>
         <Button type="submit" disabled={isPending}>
-          {isPending ? <LuLoader2 className="mr-2 w-5 h-5 animate-spin" /> : <PiPlusCircleLight className="mr-2 w-5 h-5" />}
+          {isPending ? (
+            <LuLoader2 className="mr-2 w-5 h-5 animate-spin" />
+          ) : (
+            <PiPlusCircleLight className="mr-2 w-5 h-5" />
+          )}
           Add Record
         </Button>
       </form>

@@ -4,13 +4,14 @@ import AuthPage from "./pages/auth";
 import { ThemeProvider } from "./components/theme-provider";
 import { FinancialRecordsProvider } from "./context/financial-record-context";
 import { AuthGuard } from "./auth/AuthGuard";
+import BottomNav from "./components/bottom-nav";
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <FinancialRecordsProvider>
         <Router>
-          <main className="sm:max-w-lg mx-auto flex border justify-center items-center relative min-h-screen">
+          <main className="sm:max-w-lg mx-auto flex border justify-center items-center relative min-h-screen pb-16">
             <Routes>
               <Route
                 path="/"
@@ -22,6 +23,7 @@ function App() {
               />
               <Route path="/auth" element={<AuthPage />} />
             </Routes>
+            <BottomNav />
           </main>
         </Router>
       </FinancialRecordsProvider>

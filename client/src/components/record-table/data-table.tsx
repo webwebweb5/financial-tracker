@@ -35,7 +35,7 @@ import {
 } from "../ui/dropdown-menu";
 import { HiMiniChevronDown } from "react-icons/hi2";
 import { FinancialRecord } from "../../types";
-import { UpdateSelectedRowDialog } from "./selected-row-dialog";
+import { UpdateSelectedRowDialog } from "./update-selected-row-dialog";
 
 interface DataTableProps<TData extends FinancialRecord, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -48,12 +48,12 @@ export function DataTable<TData extends FinancialRecord, TValue>({
   data,
   totalMonthly,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([{ id: "date", desc: true }]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 5,
   });
 
   const [selectedRow, setSelectedRow] = useState<FinancialRecord | null>(null);
