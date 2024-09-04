@@ -72,7 +72,7 @@ export function RecordBarChart({ chartData }: { chartData: ChartData[] }) {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          Total used by {chartData[0].expense / chartData[0].income * 100}% this month <TrendingUp className="h-4 w-4" />
+          Total used by {chartData[0]?.expense / chartData[0]?.income * 100}% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
           Showing total incomes and expenses for this month
