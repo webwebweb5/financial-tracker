@@ -16,3 +16,15 @@ export interface FinancialRecordsContextType {
   deleteRecord: (id: string) => void;
   isLoading: boolean;
 }
+
+export interface DateChartData {
+  date: string;
+  income: number;
+  expense: number;
+}
+
+export interface MonthChartData {
+  month: string;
+  income: number;
+  expense: number;
+}
