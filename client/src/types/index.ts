@@ -11,9 +11,11 @@ export interface FinancialRecord {
 
 export interface FinancialRecordsContextType {
   records: FinancialRecord[];
+  categories: ICategory[];
   addRecord: (record: FinancialRecord) => void;
   updateRecord: (id: string, newRecord: FinancialRecord) => void;
   deleteRecord: (id: string) => void;
+  createCategory: (category: ICategory) => void;
   isLoading: boolean;
 }
 
@@ -27,4 +29,10 @@ export interface MonthChartData {
   month: string;
   income: number;
   expense: number;
+}
+
+export interface ICategory {
+  _id?: string;
+  userId: string;
+  name: string;
 }

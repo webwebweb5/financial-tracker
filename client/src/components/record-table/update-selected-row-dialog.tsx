@@ -59,7 +59,7 @@ export function UpdateSelectedRowDialog({
   selectedRow,
 }: SelectedRowDialogProps) {
   const { user } = useUser();
-  const { updateRecord, deleteRecord } = useFinancialRecords();
+  const { categories, updateRecord, deleteRecord } = useFinancialRecords();
   const [isPending, startTransition] = useTransition();
   const [amount, setAmount] = useState<string>("");
 
@@ -214,14 +214,11 @@ export function UpdateSelectedRowDialog({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="food">Food</SelectItem>
-                        <SelectItem value="rent">Rent</SelectItem>
-                        <SelectItem value="salary">Salary</SelectItem>
-                        <SelectItem value="utilities">Utilities</SelectItem>
-                        <SelectItem value="entertainment">
-                          Entertainment
-                        </SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                        {categories?.map((category) => (
+                          <SelectItem key={category._id} value={category.name}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -244,9 +241,9 @@ export function UpdateSelectedRowDialog({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="credit-card">Credit Card</SelectItem>
-                        <SelectItem value="cash">Cash</SelectItem>
-                        <SelectItem value="bank-transfer">
+                        <SelectItem value="Credit Card">Credit Card</SelectItem>
+                        <SelectItem value="Cash">Cash</SelectItem>
+                        <SelectItem value="Bank Transfer">
                           Bank Transfer
                         </SelectItem>
                       </SelectContent>

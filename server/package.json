@@ -17,6 +17,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
@@ -24,6 +25,7 @@
     "nodemon": "^3.1.4",
     "pre-commit": "^1.2.2",
     "rimraf": "^6.0.1",
+    "svix": "^1.32.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   },

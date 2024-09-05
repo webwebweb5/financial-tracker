@@ -1,6 +1,10 @@
 import { useUser } from "@clerk/clerk-react";
 import { createContext, useContext, useEffect, useState } from "react";
-import { FinancialRecord, FinancialRecordsContextType } from "../types";
+import {
+  FinancialRecord,
+  FinancialRecordsContextType,
+  ICategory,
+} from "../types";
 import { useToast } from "../hooks/use-toast";
 
 export const FinancialRecordsContext = createContext<
@@ -13,6 +17,7 @@ export const FinancialRecordsProvider = ({
   children: React.ReactNode;
 }) => {
   const [records, setRecords] = useState<FinancialRecord[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user } = useUser();
   const { toast } = useToast();
@@ -38,8 +43,30 @@ export const FinancialRecordsProvider = ({
     }
   };
 
+  const fetchCategories = async () => {
+    if (!user) return;
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_API}/category/getAllCategories/${
+          user.id
+        }`
+      );
+
+      if (response.ok) {
+        const categories = await response.json();
+        setCategories(categories);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchRecords();
+    fetchCategories();
   }, [user]);
 
   const addRecord = async (record: FinancialRecord) => {
@@ -141,9 +168,40 @@ export const FinancialRecordsProvider = ({
     }
   };
 
+  const createCategory = async (category: ICategory) => {
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_API}/category/create`,
+      {
+        method: "POST",
+        body: JSON.stringify(category),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    try {
+      if (response.ok) {
+        const newCategory = await response.json();
+        setCategories((prev) => [...prev, newCategory]);
+        toast({
+          variant: "success",
+          description: "Create Category Successfully",
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      // TODO: fix err backend
+      toast({
+        variant: "destructive",
+        description: "Uh oh! Something went wrong.",
+      });
+    }
+  };
+
   return (
     <FinancialRecordsContext.Provider
-      value={{ records, addRecord, updateRecord, deleteRecord, isLoading }}
+      value={{ records, categories, addRecord, updateRecord, deleteRecord, createCategory, isLoading }}
     >
       {children}
     </FinancialRecordsContext.Provider>

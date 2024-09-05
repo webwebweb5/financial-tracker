@@ -20,3 +20,11 @@ export const RecordWithIdSchema = z.object({
   category: z.string().min(1, { message: "Category is required" }),
   paymentMethod: z.string().min(1, { message: "Payment method is required" }),
 });
+
+export const CategorySchema = z.object({
+  userId: z.string(),
+  name: z
+    .string()
+    .min(2, { message: "Category name must contain at least 2 character(s)" })
+    .max(15, { message: "Category name must contain at most 50 character(s)" }),
+});

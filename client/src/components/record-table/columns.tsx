@@ -7,8 +7,10 @@ import { FinancialRecord } from "../../types";
 
 export const columns: ColumnDef<FinancialRecord>[] = [
   {
+    id: "description",
     accessorKey: "description",
     header: "Description",
+    size: 120,
   },
   {
     accessorKey: "amount",
@@ -30,18 +32,21 @@ export const columns: ColumnDef<FinancialRecord>[] = [
         currency: "THB",
       }).format(amount);
 
-      const amountColor = amount < 0 ? "text-red-600" : "text-green-600 ml-3.5";
+      const amountColor = amount < 0 ? "text-red-600" : "text-green-600 pl-3.5";
 
-      return <div className={`font-medium ml-2 ${amountColor}`}>{formatted}</div>;
+      return <div className={`font-medium pl-3 ${amountColor}`}>{formatted}</div>;
     },
+    size: 120,
   },
   {
     accessorKey: "category",
     header: "Category",
+    size: 100,
   },
   {
     accessorKey: "paymentMethod",
     header: "Method",
+    size: 120,
   },
   {
     accessorKey: "date",
@@ -69,7 +74,8 @@ export const columns: ColumnDef<FinancialRecord>[] = [
         minute: "numeric",
       });
 
-      return <div>{formattedDate} {formattedTime}</div>;
+      return <div>{formattedDate} <br /> {formattedTime} น.</div>;
     },
+    size: 120,
   },
 ];

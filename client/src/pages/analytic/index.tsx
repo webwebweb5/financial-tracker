@@ -6,8 +6,6 @@ import { formatRecordsToMonthChartData } from "../../utils/format-chart";
 export default function AnalyticPage() {
   const { records } = useFinancialRecords();
 
-  console.log(records);
-
   const chartData = formatRecordsToMonthChartData(records);
 
   return (

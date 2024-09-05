@@ -30,9 +30,7 @@ export default function DashboardPage() {
 
   if (!isLoaded) return <Loading />;
 
-  const [integerPart, decimalPart] = totalMonthly
-    .toFixed(2)
-    .split(".");
+  const [integerPart, decimalPart] = totalMonthly.toFixed(2).split(".");
 
   const textColor = totalMonthly > 0 ? "text-green-500" : "text-red-500";
 
@@ -72,8 +70,13 @@ export default function DashboardPage() {
             Spent this month
           </h1>
           <div className={`flex justify-center mt-5 ${textColor}`}>
-            <h1 className="text-4xl font-bold">{"$ "}</h1>
-            <h1 className="text-center text-6xl">{integerPart}</h1>
+            <h1 className="text-4xl font-bold">{"฿ "}</h1>
+            <h1 className="text-center text-6xl">
+              {new Intl.NumberFormat("th-TH", {
+                maximumFractionDigits: 0,
+              }).format(Number(integerPart))}
+            </h1>
+
             <h1 className="text-center text-4xl">.{decimalPart}</h1>
           </div>
         </div>
@@ -87,4 +90,3 @@ export default function DashboardPage() {
     </main>
   );
 }
-

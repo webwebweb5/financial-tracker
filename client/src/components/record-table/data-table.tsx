@@ -48,9 +48,13 @@ export function DataTable<TData extends FinancialRecord, TValue>({
   data,
   totalMonthly,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([{ id: "date", desc: true }]);
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "date", desc: true },
+  ]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    paymentMethod: false,
+  });
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 5,
@@ -82,6 +86,9 @@ export function DataTable<TData extends FinancialRecord, TValue>({
     setSelectedRow(row);
     setIsDialogOpen(true);
   };
+
+  const visibleColumnCount =
+    table.getAllColumns().filter((col) => col.getIsVisible()).length - 1;
 
   return (
     <>
@@ -156,7 +163,13 @@ export function DataTable<TData extends FinancialRecord, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      key={header.id}
+                      style={{
+                        minWidth: header.column.columnDef.size,
+                        maxWidth: header.column.columnDef.size,
+                      }}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -201,8 +214,12 @@ export function DataTable<TData extends FinancialRecord, TValue>({
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={4}>Total</TableCell>
-              <TableCell className="text-right">฿ {totalMonthly}</TableCell>
+              <TableCell className="p-4" colSpan={visibleColumnCount}>
+                Total
+              </TableCell>
+              <TableCell className="text-right p-4">
+                ฿ {new Intl.NumberFormat("th-TH").format(totalMonthly)}
+              </TableCell>
             </TableRow>
           </TableFooter>
         </Table>
