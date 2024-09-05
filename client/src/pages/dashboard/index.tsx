@@ -1,11 +1,12 @@
 import { SignedIn, UserButton, useUser } from "@clerk/clerk-react";
-import { GiMoneyStack } from "react-icons/gi";
+// import { GiMoneyStack } from "react-icons/gi";
 import { useFinancialRecords } from "../../context/financial-record-context";
 import { useEffect, useMemo } from "react";
 import Loading from "../../components/loading";
 import { DataTable } from "../../components/record-table/data-table";
 import { columns } from "../../components/record-table/columns";
 import { useNavigate } from "react-router-dom";
+import { ModeToggle } from "../../components/mode-toggle";
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
@@ -39,8 +40,8 @@ export default function DashboardPage() {
     <main className="max-w-[78rem] mx-auto p-4 overflow-auto">
       <div className="gap-4 flex flex-col">
         <div className="flex">
-          <div className="rounded-lg flex gap-x-6 p-4">
-            <GiMoneyStack className="text-6xl text-neutral-50" />
+          <div className="rounded-lg flex gap-x-6 p-2">
+            {/* <GiMoneyStack className="text-6xl text-neutral-50" /> */}
 
             <div>
               <h1 className="text-2xl font-medium text-neutral-300">
@@ -56,7 +57,8 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="flex-1 flex justify-center items-center">
+          <div className="flex-1 flex justify-end items-center gap-4 pr-4">
+            <ModeToggle />
             <SignedIn>
               <UserButton />
             </SignedIn>

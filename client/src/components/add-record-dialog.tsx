@@ -1,5 +1,6 @@
 "use client";
 
+import FinancialRecordForm from "./financial-record-form";
 import {
   Dialog,
   DialogContent,
@@ -7,8 +8,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
-
-import FinancialRecordForm from "../pages/dashboard/financial-record-form";
 
 interface AddRecordDialogProps {
   isOpen: boolean;

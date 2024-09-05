@@ -6,12 +6,20 @@ import { formatRecordsToMonthChartData } from "../../utils/format-chart";
 export default function AnalyticPage() {
   const { records } = useFinancialRecords();
 
+  console.log(records);
+
   const chartData = formatRecordsToMonthChartData(records);
 
   return (
     <div className="flex flex-col w-full">
       <TopNavigation />
-      <RecordBarChart chartData={chartData} />
+      {records.length !== 0 ? (
+        <RecordBarChart chartData={chartData} />
+      ) : (
+        <div className="flex justify-center items-center h-full">
+          <div>No Records.</div>
+        </div>
+      )}
     </div>
   );
 }

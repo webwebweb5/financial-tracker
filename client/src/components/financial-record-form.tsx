@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Button } from "../../components/ui/button";
+import { Button } from "../components/ui/button";
 
 import {
   Form,
@@ -14,19 +14,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../components/ui/form";
+} from "../components/ui/form";
 
-import { Input } from "../../components/ui/input";
+import { Input } from "../components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../components/ui/select";
+} from "../components/ui/select";
 import { useUser } from "@clerk/clerk-react";
-import { useFinancialRecords } from "../../context/financial-record-context";
-import { RecordSchema } from "../../schemas";
+import { useFinancialRecords } from "../context/financial-record-context";
+import { RecordSchema } from "../schemas";
 import { useTransition } from "react";
 import { LuLoader2 } from "react-icons/lu";
 import { PiPlusCircleLight } from "react-icons/pi";
